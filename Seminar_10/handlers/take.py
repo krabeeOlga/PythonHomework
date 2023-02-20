@@ -8,6 +8,9 @@ import game
 async def mes_help(message: Message):
     for duel in game.total:
         if message.from_user.id == duel[0]:
+            if duel[2] == None:
+                await check_set_max_count(message, duel)
+                return
             count = message.text
             name = message.from_user.first_name
             if count.isdigit() and 0 < int(count) < 29:
@@ -33,6 +36,15 @@ async def check_win(message: Message, win: str, total: list):
         game.total.remove(total)
         return True
     return False
+
+async def check_set_max_count(message: Message, total: list):
+    if message.text.isdigit() == False:
+        await message.answer('Чтобы начать тебе нужно установить макс кол-во конфет...')
+        return False
+
+    total[2] = int(message.text)
+    await message.answer('Начинаем, теперь бери от 1 до 28...')
+    return True
 
 
                 
